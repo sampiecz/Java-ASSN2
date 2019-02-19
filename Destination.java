@@ -1,6 +1,6 @@
 public class Destination
 {
-    private string cityName;
+    private String cityName;
     private int normalMiles;
     private int frequentFlyerMiles;
     private int additionalMilesForUpgrading;
@@ -8,12 +8,12 @@ public class Destination
     private int frequentFlyerProgramEndMonth;
 
 
-    public void setCityName(int cityName)
+    public void setCityName(String cityName)
     {
         this.cityName = cityName;
     }
 
-    public string getCityName()
+    public String getCityName()
     {
         return this.cityName;
     }

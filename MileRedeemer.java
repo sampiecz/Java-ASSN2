@@ -17,7 +17,7 @@ public class MileRedeemer
 	{
 		String destinationRecord;
 
-		String [] subStrings;
+		String[] subStrings;
 
 		while (fileName.hasNext())
 		{
@@ -42,14 +42,37 @@ public class MileRedeemer
 
     public String[] getCityNames()
     {
+        ArrayList<String> names = new ArrayList<String>();
 
+        for (destination : this.destinations)
+        {
+            names.add(destination);
+        }
+
+        return Arrays.sort(names);
     }
 
+    // miles is total available miles
+    // month is the desired month of departure
+    // returns array of string objects containing descriptions of redemeed tickets
+    // it should also save the miles remaining after the tickets have been redeemed
     public String[] redeemMiles(int miles, int month)
     {
+        ArrayList<String> descriptions = new ArrayList<String>();
+
+        for (destination : this.destinationList)
+        {
+            if (.normalMiles > 0)
+            {
+            }
+
+        }
+
+        return descriptions;
     }
 
     public int getRemainingMiles()
     {
+        return miles;
     }
 }
