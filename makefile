@@ -6,6 +6,7 @@ JC = javac
 CLASSES = \
 Destination.java\
 MileRedeemer.java\
+MileComparator.java\
 MileRedemptionApp.java
 
 default: classes
