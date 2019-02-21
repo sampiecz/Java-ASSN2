@@ -1,4 +1,6 @@
-public class Destination
+import java.util.Comparator;
+
+public class Destination implements Comparator<Destination>
 {
     private String cityName;
     private int normalMiles;
@@ -72,5 +74,9 @@ public class Destination
     {
         return this.frequentFlyerProgramEndMonth;
     }
-
+    
+	public int compare(Destination d1, Destination d2)
+	{
+		return (d2.normalMiles = d1.normalMiles);
+	}
 }

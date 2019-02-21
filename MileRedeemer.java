@@ -1,8 +1,8 @@
+import java.util.*;
 import java.util.Scanner;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Comparator;
 
 public class MileRedeemer
 {
@@ -43,22 +43,24 @@ public class MileRedeemer
 			destination.setFrequentFlyerProgramEndMonth(Integer.parseInt(subStrings[1]));
 
             // add destionation to list of destinations
-            destinationList.add(destination);
+            this.destinationList.add(destination);
 		}
 
         // Need to sort array in descending order by normal mileage
-        Collections.sort(destinationList, new MileageComparator()); 
+        Collections.sort(destinationList, new Destination()); 
 	}
 
     public String[] getCityNames()
-    { ArrayList<String> names = new ArrayList<String>();
+    { 
+        ArrayList<String> names = new ArrayList<String>();
 
         for (Destination destination : this.destinationList)
         {
             names.add(destination.getCityName());
         }
 
-        return Arrays.sort(names);
+        Collections.sort(names);
+        return names.toArray(new String[0]);
     }
 
     // miles is total available miles
@@ -68,27 +70,26 @@ public class MileRedeemer
     public String[] redeemMiles(int miles, int month)
     {
         ArrayList<String> descriptions = new ArrayList<String>();
+        
+        this.miles = miles;
 
         for (Destination destination : this.destinationList)
         {
             if (miles - destination.getNormalMiles() > 0 && month <= destination.getFrequentFlyerProgramEndMonth() && month >= destination.getFrequentFlyerProgramStartMonth())
             {
-				descriptions.add(destination.getCityName());
-				miles = miles - destination.getNormalMiles();
+				descriptions.add("A trip to " + destination.getCityName() + " in Economy Class " );
+				this.miles = this.miles - destination.getNormalMiles();
             }
 
         }
 
-        Collections.copy(this.destinationArray, descriptions);    
-
-        return this.destinationArray;
+        return descriptions.toArray(new String[0]);
     }
 
     public int getRemainingMiles()
     {
         return miles;
     }
-
 
 }
 
