@@ -70,25 +70,42 @@ public class MileRedeemer
     public String[] redeemMiles(int miles, int month)
     {
         ArrayList<String> descriptions = new ArrayList<String>();
-        
+        ArrayList<String> places = new ArrayList<String>();
+
         this.miles = miles;
+
 
         for (Destination destination : this.destinationList)
         {
-            if (miles - destination.getNormalMiles() > 0 && month <= destination.getFrequentFlyerProgramEndMonth() && month >= destination.getFrequentFlyerProgramStartMonth())
+            if (this.miles - destination.getNormalMiles() > 0 && month <= destination.getFrequentFlyerProgramEndMonth() && month >= destination.getFrequentFlyerProgramStartMonth())
             {
-				descriptions.add("A trip to " + destination.getCityName() + " in Economy Class " );
-				this.miles = this.miles - destination.getNormalMiles();
+                    descriptions.add("A trip to " + destination.getCityName() + " in Economy Class " );
+                    places.add(destination.getCityName());
+                    this.miles = this.miles - destination.getNormalMiles();
             }
-
+            
         }
+
+        for (Destination destination : this.destinationList)
+        {
+            if (places.contains(destination.getCityName()))
+            {
+                // can we afford to upgrade
+                if ((this.miles - destination.getFrequentFlyerMiles() - destination.getAdditionalMilesForUpgrading()) > 0)
+                {
+                    descriptions.set(descriptions.indexOf("A trip to " + destination.getCityName() + " in Economy Class "), "A trip to " + destination.getCityName() + " in First Class "); 
+                    this.miles = this.miles - destination.getFrequentFlyerMiles() - destination.getAdditionalMilesForUpgrading();               
+                }
+            }
+        }
+
 
         return descriptions.toArray(new String[0]);
     }
 
     public int getRemainingMiles()
     {
-        return miles;
+        return this.miles;
     }
 
 }

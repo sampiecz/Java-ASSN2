@@ -20,6 +20,10 @@ public class MileRedemptionApp
     public static void main(String[] args) throws IOException
     {
 		boolean again = true;
+        boolean first = true;
+
+        // Instantiate mile redeemer obj to process destinations
+        MileRedeemer myMileRedeemer = new MileRedeemer();
 
         while (again)
         {
@@ -28,34 +32,32 @@ public class MileRedemptionApp
 
 			Scanner keyScan = new Scanner(System.in);
 
-			// Get input from user
-			System.out.print("Please enter the name of the file: ");
-			fileName = keyScan.nextLine();
+            if (first)
+            {
+                // Get input from user
+                System.out.print("Please enter the name of the file: ");
+                fileName = keyScan.nextLine();
 
-			Scanner fileScan = new Scanner(new File(fileName));
+                Scanner fileScan = new Scanner(new File(fileName));
 
-			// Instantiate mile redeemer obj to process destinations
-			MileRedeemer myMileRedeemer = new MileRedeemer();
+                // Print bannner
+                System.out.print(
+                    "\n---------------------------------------------------------------\n" + 
+                    "WELCOME TO THE JAVA AIRLINES FREQUENT FLYER MILES REDEMPTION APP\n" + 
+                    "----------------------------------------------------------------\n" + 
+                    "\nList of destination cities your client can travel to:\n"
+                );
 
-			// Process the destination records
-			myMileRedeemer.readDestinations(fileScan);
+                // Process the destination records
+                myMileRedeemer.readDestinations(fileScan);
 
+                // List city names 
+                for (String name : myMileRedeemer.getCityNames())
+                    System.out.println(name);
 
-			
-			// Print bannner
-			System.out.print(
-				"\n---------------------------------------------------------------\n" + 
-				"WELCOME TO THE JAVA AIRLINES FREQUENT FLYER MILES REDEMPTION APP\n" + 
-				"----------------------------------------------------------------\n" + 
-				"\nList of destination cities your client can travel to:\n"
-			);
+                System.out.println("\n---------------------------------------------------------------");
 
-
-			// List city names 
-			for (String name : myMileRedeemer.getCityNames())
-				System.out.println(name);
-
-			System.out.println("\n---------------------------------------------------------------");
+            }
 
 			// Prompt travel agent for client's frequent flyer miles balance
 			// Get input from user
@@ -74,13 +76,19 @@ public class MileRedemptionApp
 
 
 			// Redeem miles
-			System.out.println("\nYour client's Frequent Flyer Miles can be used to redeem the following tickets: \n\n");
-
-			for( String goingTo : myMileRedeemer.redeemMiles(frequentFlyerMiles, departure))
-				System.out.println(" * " + goingTo);
-
-			// Present remaining miles
-			System.out.print("Your client's remaining Frequent Flyer Miles: " + myMileRedeemer.getRemainingMiles());
+            if (myMileRedeemer.redeemMiles(frequentFlyerMiles, departure).length != 0)
+            {
+                System.out.println("\nYour client's Frequent Flyer Miles can be used to redeem the following tickets: \n");
+                for( String goingTo : myMileRedeemer.redeemMiles(frequentFlyerMiles, departure))
+                    System.out.println(" * " + goingTo);
+            }
+            else
+            {
+                System.out.println("\n*** Your client has not accumulated enough Frequent Flyer Miles ***");
+            }
+            
+            // Present remaining miles
+			System.out.println("\nYour client's remaining Frequent Flyer Miles: " + myMileRedeemer.getRemainingMiles());
 
 			// Continue scanner
 			Scanner continueScan = new Scanner(System.in);
@@ -91,27 +99,24 @@ public class MileRedemptionApp
 		  		"Do you want to continue (y/n)? "
 		  	);
 
+            // Ask if we want to continue
 			String continueString = continueScan.nextLine(); 
 
-              if (continueString.equalsIgnoreCase("y") || continueString.equalsIgnoreCase("yes"))
-              {
-                  again = true;
-              }
-              else
-              {
+            if (continueString.equalsIgnoreCase("y") || continueString.equalsIgnoreCase("yes"))
+            {
+                again = true;
+            }
+            else
+            {
+                System.out.print(
+                "\n-------------------------------------------------------------------------\n" +
+                "THANK YOU FOR USING THE JAVA AIRLINES FREQUENT FLYER MILES REDEMPTION APP\n" + 
+                "-------------------------------------------------------------------------\n"
+                );
+                again = false;
+            }
 
-                  System.out.print(
-			  		"-------------------------------------------------------------------------\n" +
-			  		"THANK YOU FOR USING THE JAVA AIRLINES FREQUENT FLYER MILES REDEMPTION APP\n" + 
-			  		"-------------------------------------------------------------------------\n"
-			  	);
-
-                  again = false;
-              }
-
-			keyScan.close();
-			fileScan.close();
-			continueScan.close();
+            first = false;
 
           }
 			
