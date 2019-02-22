@@ -96,9 +96,7 @@ public class MileRedemptionApp
 			// Continue?
             System.out.print(
 		  		"\n----------------------------------------------------------------\n" + 
-		  		"Do you want to continue (y/n)? "
-		  	);
-
+		  		"Do you want to continue (y/n)? "); 
             // Ask if we want to continue
 			String continueString = continueScan.nextLine(); 
 

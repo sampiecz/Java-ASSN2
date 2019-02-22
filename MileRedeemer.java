@@ -73,28 +73,45 @@ public class MileRedeemer
         ArrayList<String> places = new ArrayList<String>();
 
         this.miles = miles;
-
+        
+        // 1 do any destinations fit into the month period
+        // 2 if it does fall in the month period, and the person can afford it, add to list of destinations
+        //
 
         for (Destination destination : this.destinationList)
         {
-            if (this.miles - destination.getNormalMiles() > 0 && month <= destination.getFrequentFlyerProgramEndMonth() && month >= destination.getFrequentFlyerProgramStartMonth())
+            // if we have frequent flyer options spend miles on that
+            if (month <= destination.getFrequentFlyerProgramEndMonth() && month >= destination.getFrequentFlyerProgramStartMonth())
             {
+                if (this.miles - destination.getFrequentFlyerMiles() > 0)
+                {
+                    descriptions.add("A trip to " + destination.getCityName() + " in Economy Class " );
+                    places.add(destination.getCityName());
+                    this.miles = this.miles - destination.getFrequentFlyerMiles();
+                }
+            }
+            else
+            {
+                // use regular miles
+                if (this.miles - destination.getNormalMiles() > 0)
+                {
                     descriptions.add("A trip to " + destination.getCityName() + " in Economy Class " );
                     places.add(destination.getCityName());
                     this.miles = this.miles - destination.getNormalMiles();
+                }
             }
             
         }
 
         for (Destination destination : this.destinationList)
         {
-            if (places.contains(destination.getCityName()))
+            if (places.contains(destination.getCityName()) && month <= destination.getFrequentFlyerProgramEndMonth() && month >= destination.getFrequentFlyerProgramStartMonth())
             {
                 // can we afford to upgrade
-                if ((this.miles - destination.getFrequentFlyerMiles() - destination.getAdditionalMilesForUpgrading()) > 0)
+                if ((this.miles - destination.getAdditionalMilesForUpgrading()) > 0)
                 {
                     descriptions.set(descriptions.indexOf("A trip to " + destination.getCityName() + " in Economy Class "), "A trip to " + destination.getCityName() + " in First Class "); 
-                    this.miles = this.miles - destination.getFrequentFlyerMiles() - destination.getAdditionalMilesForUpgrading();               
+                    this.miles = this.miles - destination.getAdditionalMilesForUpgrading();               
                 }
             }
         }
