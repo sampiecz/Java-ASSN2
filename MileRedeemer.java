@@ -80,43 +80,55 @@ public class MileRedeemer
 
         for (Destination destination : this.destinationList)
         {
-            // if we have frequent flyer options spend miles on that
+            // are we in a frequent flyer month? 
             if (month <= destination.getFrequentFlyerProgramEndMonth() && month >= destination.getFrequentFlyerProgramStartMonth())
             {
-                if (this.miles - destination.getFrequentFlyerMiles() > 0)
+                // if we are do we have enough frequent flyer miles?
+                if (this.miles >= destination.getFrequentFlyerMiles())
                 {
+                    // if we do add that destination to array of destinations
                     descriptions.add("A trip to " + destination.getCityName() + " in Economy Class " );
                     places.add(destination.getCityName());
+
+                    // subtract miles
                     this.miles = this.miles - destination.getFrequentFlyerMiles();
                 }
             }
+            // otherwise it's not a frequent flyer month
             else
             {
-                // use regular miles
-                if (this.miles - destination.getNormalMiles() > 0)
+                // see if we have enough miles for this destinations normal miles 
+                if (this.miles >= destination.getNormalMiles())
                 {
+                    // add the destination to list of places
                     descriptions.add("A trip to " + destination.getCityName() + " in Economy Class " );
                     places.add(destination.getCityName());
+
+                    // deduct the miles
                     this.miles = this.miles - destination.getNormalMiles();
                 }
             }
             
         }
 
+        // go through all the destinations
         for (Destination destination : this.destinationList)
         {
-            if (places.contains(destination.getCityName()) && month <= destination.getFrequentFlyerProgramEndMonth() && month >= destination.getFrequentFlyerProgramStartMonth())
+            // if we have visited that place in economy
+            if (places.contains(destination.getCityName()))
             {
                 // can we afford to upgrade
-                if ((this.miles - destination.getAdditionalMilesForUpgrading()) > 0)
+                if ((this.miles >= destination.getAdditionalMilesForUpgrading()))
                 {
                     descriptions.set(descriptions.indexOf("A trip to " + destination.getCityName() + " in Economy Class "), "A trip to " + destination.getCityName() + " in First Class "); 
+                    
+                    // deduct the miles
                     this.miles = this.miles - destination.getAdditionalMilesForUpgrading();               
                 }
             }
         }
 
-
+        // return all the arry with strings of where we can go and what tickets 
         return descriptions.toArray(new String[0]);
     }
 
