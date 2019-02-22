@@ -77,6 +77,7 @@ public class Destination implements Comparator<Destination>
     
 	public int compare(Destination d1, Destination d2)
 	{
-		return (d2.normalMiles = d1.normalMiles);
+		return (d2.normalMiles - d1.normalMiles);
 	}
+
 }

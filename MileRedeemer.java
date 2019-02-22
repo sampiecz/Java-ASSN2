@@ -74,14 +74,10 @@ public class MileRedeemer
 
         this.miles = miles;
         
-        // 1 do any destinations fit into the month period
-        // 2 if it does fall in the month period, and the person can afford it, add to list of destinations
-        //
-
         for (Destination destination : this.destinationList)
         {
             // are we in a frequent flyer month? 
-            if (month <= destination.getFrequentFlyerProgramEndMonth() && month >= destination.getFrequentFlyerProgramStartMonth())
+            if (month >= destination.getFrequentFlyerProgramStartMonth() && month <= destination.getFrequentFlyerProgramEndMonth())
             {
                 // if we are do we have enough frequent flyer miles?
                 if (this.miles >= destination.getFrequentFlyerMiles())
@@ -117,7 +113,7 @@ public class MileRedeemer
             // if we have visited that place in economy
             if (places.contains(destination.getCityName()))
             {
-                // can we afford to upgrade
+                // see if can we afford to upgrade to first class
                 if ((this.miles >= destination.getAdditionalMilesForUpgrading()))
                 {
                     descriptions.set(descriptions.indexOf("A trip to " + destination.getCityName() + " in Economy Class "), "A trip to " + destination.getCityName() + " in First Class "); 
